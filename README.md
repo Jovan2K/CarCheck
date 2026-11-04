@@ -1,58 +1,101 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# CarCheck — Sistem Inspeksi dan Evaluasi Mobil Bekas
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+**Kelompok 1 — Proyek Laravel Fundamental**
+- **Ketua Kelompok**: Tedy Darmawan (`K3524037`)
+- **Anggota**:
+  - Galang Nur Seto (`K3524053`)
+  - Afifah Zahrotul Khoir Sarifudin (`K3524019`)
+  - Adelia Rosa Permata (`K3524001`)
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 1. Deskripsi Sistem
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+**CarCheck** adalah aplikasi web inspeksi dan evaluasi mobil bekas presisi tinggi yang memfasilitasi pencatatan kondisi multi-komponen (6 area fungsional), penilaian risiko otomatis (*Risk Index Algorithm*), dan kalkulasi biaya restorasi secara *real-time*. Sistem ini dirancang untuk mengatasi masalah asimetri informasi bagi:
+1. **End-Buyer (Calon Pembeli Pribadi)**
+2. **Inspektur Independen / Mekanik Lepas**
+3. **Pedagang Mobil Bekas (Showroom)**
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## 2. Fitur Utama & Pengayaan
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### A. Autentikasi & Manajemen Data (CRUD)
+- **Session Authentication**: Registrasi (`/register`), Login (`/login`), Logout (`/logout`), serta fitur **Login Instan Demo 1-Klik**.
+- **CRUD Data Kendaraan (`/cars`)**: Mengelola profil dan identitas spesifik kendaraan (Merek, Model, Tahun, Nomor Polisi, Transmisi, Odometer, Harga Penawaran Awal, Nomor Rangka/VIN, Nomor Mesin, Warna, BBM, Pajak, dan Foto Kendaraan).
+- **CRUD Sesi Inspeksi (`/inspections`)**: Membuat, membaca, merevisi/mengoreksi, dan menghapus lembar inspeksi kendaraan.
+- **CRUD Item Temuan (`/inspections/{id}/items`)**: Menambah atau menghapus temuan komponen individual beserta unggahan foto bukti kerusakan.
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### B. Formulir Inspeksi Multi-Komponen (6 Area Fungsional)
+Menyediakan *checklist* 32 titik pemeriksaan standar pada 6 klaster area utama dengan status **Baik (`Good`)**, **Perlu Perhatian (`Warning`)**, dan **Rusak Parah (`Critical`)** beserta kalkulator *real-time*:
+1. **Mesin (Engine Bay)**: Oli & filter, kebocoran kompresi/head gasket, radiator & sistem pendingin, drive/fan belt, engine mounting, performa start & pengisian aki.
+2. **Transmisi & Drivetrain**: Perpindahan gigi, respon transmisi & kickdown, kopling/torque converter, driveshaft/CV joint & gardan, oli transmisi.
+3. **Kaki-Kaki & Suspensi (Underbody)**: Shock absorber, bushing lower arm & stabilizer, ball joint & tie rod, kondisi 4 ban, rack steer & keseimbangan kemudi.
+4. **Struktur Bodi & Eksterior**: Tulang sasis & apron, indikasi benturan/tabrakan besar, panel sambungan, kondisi cat/dempul/karat, kaca & lampu.
+5. **Interior & Kelistrikan**: Panel dashboard & indikator, sistem AC & temperatur, speedometer & diagnosis OBD (DTC), audio & head unit, power window & jok, karpet dasar & bau apek (indikasi banjir).
+6. **Sistem Pengereman & Dokumen**: Tebal kampas rem, piringan rotor/disc brake, rem parkir, modul ABS & minyak rem, serta kelengkapan dokumen (STNK, BPKB, Faktur).
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+### C. Kalkulasi Otomatis Skor Risiko (Processing Engine)
+- **Agregasi Biaya**: Menghitung `total_repair_cost = SUM(estimated_cost)` dari seluruh item bermasalah.
+- **Algoritma Risk Index (`overall_risk_level`)**:
+  - **Rendah (`Low`)**: Bebas masalah sasis/mesin berat/banjir, dan rasio estimasi perbaikan `< 5%` dari harga penawaran.
+  - **Sedang (`Moderate`)**: Masalah pemakaian wajar (kaki-kaki/servis rutin), rasio perbaikan `5% s.d. 15%` dari harga penawaran.
+  - **Tinggi (`High`)**: Ditemukan status `Critical` pada area **Struktur Bodi (Sasis)**, **Mesin Berat**, **Indikasi Banjir**, atau rasio biaya perbaikan `> 15%` dari harga penawaran.
+- **Predikat Skor Huruf (`A`, `B`, `C`, `D`, `E`) & Rekomendasi Harga Negosiasi Ideal**.
 
-## Agentic Development
+### D. Halaman Detail Laporan (URI Dinamis) & Pengayaan
+- **URI Dinamis**: Dapat diakses melalui `/inspections/{id}` maupun `/cars/{slug}/report`.
+- **Desain Laporan Standar Otospector**: Menampilkan tabel identitas lengkap, skor per area, skor keseluruhan (A–E), indikator *Bebas Terendam Banjir* & *Bebas Tabrakan Besar*, QR Code verifikasi, matriks checklist 6 area, dan dokumentasi temuan kerusakan.
+- **Cetak / Ekspor PDF (`/inspections/{id}/print`)**: Halaman format cetak A4 resmi siap disimpan sebagai PDF.
+- **Komparator Unit (`/compare`)**: Perbandingan berdampingan (*side-by-side comparison*) antara 2 hingga 3 mobil untuk menentukan rekomendasi unit terbaik.
+- **Unggah Foto Bukti Kerusakan**: Penyimpanan dokumentasi visual komponen rusak ke `storage/app/public`.
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+---
+
+## 3. Struktur Database (ERD)
+
+1. **`users`**: `id`, `name`, `email`, `phone`, `role`, `password`, `timestamps`
+2. **`cars`**: `id`, `user_id` (FK), `brand`, `model`, `slug`, `year`, `license_plate`, `transmission`, `mileage`, `listing_price`, `color`, `fuel_type`, `body_type`, `engine_capacity`, `vin_number`, `engine_number`, `ownership_type`, `tax_expiry_date`, `document_status`, `photo_url`, `timestamps`
+3. **`inspections`**: `id`, `reference_number`, `car_id` (FK), `inspector_id` (FK), `inspection_date`, `status`, `overall_risk_level`, `overall_grade`, `flood_free`, `accident_free`, `total_repair_cost`, `general_notes`, `timestamps`
+4. **`inspection_items`**: `id`, `inspection_id` (FK Cascade Delete), `category`, `item_name`, `condition`, `estimated_cost`, `defect_description`, `photo_url`, `timestamps`
+
+---
+
+## 4. Panduan Instalasi & Menjalankan Aplikasi
 
 ```bash
-composer require laravel/boost --dev
+# 1. Install dependensi PHP & JavaScript
+composer install
+npm install
 
-php artisan boost:install
+# 2. Salin konfigurasi environment & generate key (jika belum ada)
+cp .env.example .env
+php artisan key:generate
+
+# 3. Jalankan migrasi beserta seeder data contoh (termasuk laporan Nissan X-Trail #170259096031)
+php artisan migrate:fresh --seed
+
+# 4. Buat symlink storage publik & build aset frontend
+php artisan storage:link
+npm run build
+
+# 5. Jalankan server lokal
+php artisan serve
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+### Akun Demo (Password: `password`)
+- `tedy@carcheck.id` — Tedy Darmawan (Inspektur Independen)
+- `galang@carcheck.id` — Galang Nur Seto (Inspektur Independen)
+- `afifah@carcheck.id` — Afifah Zahrotul Khoir Sarifudin (Calon Pembeli)
+- `adelia@carcheck.id` — Adelia Rosa Permata (Showroom / Dealer)
 
-## Contributing
+---
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## 5. Hasil Pengujian (Testing)
 
-## Code of Conduct
+Aplikasi dilengkapi **15 skenario pengujian otomatis (PHPUnit)** pada `tests/Feature/CarCheckFeatureTest.php` dan `tests/Feature/ExampleTest.php`, mencakup pengujian alur fungsional, cabang algoritma Risk Index (`Low`, `Moderate`, `High`, serta temuan sasis kritis), URI dinamis, komparator, unggah foto, dan validasi input tidak valid:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```bash
+php artisan test --compact
+```
+- **Total Pengujian**: 15 *passed* (78 *assertions*)

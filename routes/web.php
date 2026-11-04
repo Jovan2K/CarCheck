@@ -1,7 +1,37 @@
 <?php
 
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CarController;
+use App\Http\Controllers\CompareController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\InspectionController;
+use App\Http\Controllers\InspectionItemController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Interactive Dashboard & Landing
+Route::get('/', [DashboardController::class, 'index'])->name('home');
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+// Session Authentication (PRD Section 2.2.A)
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
+Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+Route::post('/register', [AuthController::class, 'register'])->name('register.submit');
+Route::post('/demo-login', [AuthController::class, 'demoLogin'])->name('demo.login');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// CRUD Data Kendaraan & Dynamic Slug Report URI (PRD Section 2.2.A & 2.2.E)
+Route::get('/cars/{slug}/report', [CarController::class, 'reportBySlug'])->name('cars.report');
+Route::resource('cars', CarController::class);
+
+// CRUD Sesi Inspeksi, Dynamic Report URI & Print/Export PDF (PRD Section 2.2.A, 2.2.B, 2.2.E & 2.3)
+Route::get('/inspections/{inspection}/print', [InspectionController::class, 'print'])->name('inspections.print');
+Route::resource('inspections', InspectionController::class);
+
+// Granular CRUD for Inspection Items (Checklist Temuan Komponen)
+Route::post('/inspections/{inspection}/items', [InspectionItemController::class, 'store'])->name('inspections.items.store');
+Route::put('/inspections/{inspection}/items/{item}', [InspectionItemController::class, 'update'])->name('inspections.items.update');
+Route::delete('/inspections/{inspection}/items/{item}', [InspectionItemController::class, 'destroy'])->name('inspections.items.destroy');
+
+// Komparator Unit Side-by-Side (PRD Section 2.3)
+Route::get('/compare', [CompareController::class, 'index'])->name('compare.index');
