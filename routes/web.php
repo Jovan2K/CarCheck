@@ -6,6 +6,7 @@ use App\Http\Controllers\CompareController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InspectionController;
 use App\Http\Controllers\InspectionItemController;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 // Interactive Dashboard & Landing
@@ -35,3 +36,26 @@ Route::delete('/inspections/{inspection}/items/{item}', [InspectionItemControlle
 
 // Komparator Unit Side-by-Side (PRD Section 2.3)
 Route::get('/compare', [CompareController::class, 'index'])->name('compare.index');
+
+// Optional cloud deployment helper to run migrations & seeds via browser if needed
+Route::get('/app-migrate', function () {
+    try {
+        Artisan::call('migrate', ['--force' => true]);
+        $migrateOutput = Artisan::output();
+
+        Artisan::call('db:seed', ['--force' => true]);
+        $seedOutput = Artisan::output();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Migration & Seeding berhasil dijalankan!',
+            'migrate' => $migrateOutput,
+            'seed' => $seedOutput,
+        ]);
+    } catch (Throwable $e) {
+        return response()->json([
+            'status' => 'error',
+            'message' => $e->getMessage(),
+        ], 500);
+    }
+})->name('app.migrate');
