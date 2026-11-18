@@ -19,42 +19,42 @@ class DatabaseSeeder extends Seeder
     {
         $calculator = new InspectionRiskCalculator;
 
-        // 1. Seed Kelompok 1 CarCheck Team Users & Default Inspector
-        $tedy = User::updateOrCreate(
-            ['email' => 'tedy@carcheck.id'],
+        // 1. Seed CarCheck Core Users (Inspektur Independen, Calon Pembeli & Showroom)
+        $inspector = User::updateOrCreate(
+            ['email' => 'inspector@carcheck.id'],
             [
-                'name' => 'Tedy Darmawan (K3524037)',
-                'phone' => '081234567037',
+                'name' => 'Budi Santoso',
+                'phone' => '081234567890',
                 'role' => 'Inspektur Independen',
                 'password' => Hash::make('password'),
             ]
         );
 
-        $galang = User::updateOrCreate(
-            ['email' => 'galang@carcheck.id'],
+        $mechanic = User::updateOrCreate(
+            ['email' => 'mechanic@carcheck.id'],
             [
-                'name' => 'Galang Nur Seto (K3524053)',
-                'phone' => '081234567053',
+                'name' => 'Deni Kurniawan',
+                'phone' => '081234567891',
                 'role' => 'Inspektur Independen',
                 'password' => Hash::make('password'),
             ]
         );
 
-        $afifah = User::updateOrCreate(
-            ['email' => 'afifah@carcheck.id'],
+        $buyer = User::updateOrCreate(
+            ['email' => 'buyer@carcheck.id'],
             [
-                'name' => 'Afifah Zahrotul Khoir Sarifudin (K3524019)',
-                'phone' => '081234567019',
+                'name' => 'Siti Rahmawati',
+                'phone' => '081234567892',
                 'role' => 'Calon Pembeli',
                 'password' => Hash::make('password'),
             ]
         );
 
-        $adelia = User::updateOrCreate(
-            ['email' => 'adelia@carcheck.id'],
+        $showroom = User::updateOrCreate(
+            ['email' => 'showroom@carcheck.id'],
             [
-                'name' => 'Adelia Rosa Permata (K3524001)',
-                'phone' => '081234567001',
+                'name' => 'Mitra Mobil Showroom',
+                'phone' => '081234567893',
                 'role' => 'Showroom / Dealer',
                 'password' => Hash::make('password'),
             ]
@@ -64,7 +64,7 @@ class DatabaseSeeder extends Seeder
         $nissanXtrail = Car::updateOrCreate(
             ['license_plate' => 'B 2590 XTR'],
             [
-                'user_id' => $tedy->id,
+                'user_id' => $inspector->id,
                 'brand' => 'Nissan',
                 'model' => 'X-Trail 2.5 T32 VL',
                 'slug' => 'nissan-x-trail-25-t32-2020',
@@ -88,7 +88,7 @@ class DatabaseSeeder extends Seeder
             ['reference_number' => '170259096031'],
             [
                 'car_id' => $nissanXtrail->id,
-                'inspector_id' => $tedy->id,
+                'inspector_id' => $inspector->id,
                 'inspection_date' => '2026-10-16',
                 'status' => 'Completed',
                 'general_notes' => 'Kondisi mobil baik, tidak ditemukan indikasi bekas tabrakan besar dan terendam banjir. Ada beberapa kekurangan pemakaian wajar (oli mesin kotor, fan belt aus, ban mulai retak, piringan cakram bergelombang, dan DTC pada ABS/HVAC). Test drive dilakukan di jalanan rata dengan kecepatan di bawah 30 km/jam.',
@@ -133,7 +133,7 @@ class DatabaseSeeder extends Seeder
         $zenix = Car::updateOrCreate(
             ['license_plate' => 'AD 1028 ZNX'],
             [
-                'user_id' => $afifah->id,
+                'user_id' => $buyer->id,
                 'brand' => 'Toyota',
                 'model' => 'Kijang Innova Zenix 2.0 V HV Modellista',
                 'slug' => 'toyota-kijang-innova-zenix-2023',
@@ -157,7 +157,7 @@ class DatabaseSeeder extends Seeder
             ['reference_number' => '170259098102'],
             [
                 'car_id' => $zenix->id,
-                'inspector_id' => $galang->id,
+                'inspector_id' => $mechanic->id,
                 'inspection_date' => '2026-10-25',
                 'status' => 'Completed',
                 'general_notes' => 'Unit istimewa seperti baru, record servis resmi Auto2000 lengkap, baterai hybrid sehat 100%, bebas tabrakan dan bebas banjir. Hanya perlu spooring ringan dan penggantian wiper blade.',
@@ -177,7 +177,7 @@ class DatabaseSeeder extends Seeder
         $civic = Car::updateOrCreate(
             ['license_plate' => 'B 1998 CVC'],
             [
-                'user_id' => $adelia->id,
+                'user_id' => $showroom->id,
                 'brand' => 'Honda',
                 'model' => 'Civic RS 1.5 VTEC Turbo',
                 'slug' => 'honda-civic-rs-15-turbo-2020',
@@ -201,7 +201,7 @@ class DatabaseSeeder extends Seeder
             ['reference_number' => '170259104419'],
             [
                 'car_id' => $civic->id,
-                'inspector_id' => $tedy->id,
+                'inspector_id' => $inspector->id,
                 'inspection_date' => '2026-10-29',
                 'status' => 'Completed',
                 'general_notes' => 'Struktur sasis utuh dan mesin turbo responsif, namun sektor kaki-kaki depan (rack steer, shockbreaker, link stabilizer), 4 ban, serta motor fan AC memerlukan peremajaan segera. Estimasi perbaikan berada di rentang 7.5% dari harga penawaran (Moderate Risk).',
@@ -251,7 +251,7 @@ class DatabaseSeeder extends Seeder
         $pajero = Car::updateOrCreate(
             ['license_plate' => 'B 8821 PJR'],
             [
-                'user_id' => $adelia->id,
+                'user_id' => $showroom->id,
                 'brand' => 'Mitsubishi',
                 'model' => 'Pajero Sport 2.4 Dakar Ultimate',
                 'slug' => 'mitsubishi-pajero-sport-dakar-2018',
@@ -275,7 +275,7 @@ class DatabaseSeeder extends Seeder
             ['reference_number' => '170259112890'],
             [
                 'car_id' => $pajero->id,
-                'inspector_id' => $galang->id,
+                'inspector_id' => $mechanic->id,
                 'inspection_date' => '2026-11-02',
                 'status' => 'Completed',
                 'general_notes' => 'PERINGATAN RISIKO TINGGI: Ditemukan bekas perbaikan tabrakan depan pada bullhead/apron radiator serta rembesan oli turbo & kebocoran kompresi mesin. Transmisi matic juga mengalami gejala jedug saat perpindahan gigi 2 ke 3.',

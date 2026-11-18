@@ -18,7 +18,6 @@ Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
 Route::post('/register', [AuthController::class, 'register'])->name('register.submit');
-Route::post('/demo-login', [AuthController::class, 'demoLogin'])->name('demo.login');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // CRUD Data Kendaraan & Dynamic Slug Report URI (PRD Section 2.2.A & 2.2.E)

@@ -15,13 +15,13 @@
                 @csrf
                 <div>
                     <label for="email" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Alamat Email</label>
-                    <input type="email" id="email" name="email" value="{{ old('email', 'tedy@carcheck.id') }}" required
+                    <input type="email" id="email" name="email" value="{{ old('email') }}" placeholder="nama@email.com" required
                            class="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm focus:border-red-600 focus:ring-2 focus:ring-red-600/20 outline-none">
                 </div>
 
                 <div>
                     <label for="password" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">Kata Sandi</label>
-                    <input type="password" id="password" name="password" value="password" required
+                    <input type="password" id="password" name="password" placeholder="••••••••" required
                            class="w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm focus:border-red-600 focus:ring-2 focus:ring-red-600/20 outline-none">
                 </div>
 
@@ -37,29 +37,6 @@
                     Masuk Sekarang
                 </button>
             </form>
-
-            <!-- Quick Demo Accounts -->
-            <div class="mt-6 pt-6 border-t border-slate-100">
-                <p class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3 text-center">Akun Pengujian Cepat (Password: password)</p>
-                <div class="grid grid-cols-1 gap-2">
-                    <form action="{{ route('demo.login') }}" method="POST">
-                        @csrf
-                        <input type="hidden" name="email" value="tedy@carcheck.id">
-                        <button type="submit" class="w-full text-left px-3.5 py-2 rounded-xl border border-slate-200 hover:border-red-300 hover:bg-red-50/40 text-xs flex items-center justify-between transition cursor-pointer">
-                            <span><strong>Tedy Darmawan</strong> (Inspektur Independen)</span>
-                            <span class="text-red-600 font-bold">Login 1-Klik &rarr;</span>
-                        </button>
-                    </form>
-                    <form action="{{ route('demo.login') }}" method="POST">
-                        @csrf
-                        <input type="hidden" name="email" value="afifah@carcheck.id">
-                        <button type="submit" class="w-full text-left px-3.5 py-2 rounded-xl border border-slate-200 hover:border-red-300 hover:bg-red-50/40 text-xs flex items-center justify-between transition cursor-pointer">
-                            <span><strong>Afifah Zahrotul</strong> (Calon Pembeli)</span>
-                            <span class="text-red-600 font-bold">Login 1-Klik &rarr;</span>
-                        </button>
-                    </form>
-                </div>
-            </div>
         </div>
     </div>
 </x-layout>

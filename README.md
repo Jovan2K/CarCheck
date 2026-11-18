@@ -1,11 +1,6 @@
 # CarCheck — Sistem Inspeksi dan Evaluasi Mobil Bekas
 
-**Kelompok 1 — Proyek Laravel Fundamental**
-- **Ketua Kelompok**: Tedy Darmawan (`K3524037`)
-- **Anggota**:
-  - Galang Nur Seto (`K3524053`)
-  - Afifah Zahrotul Khoir Sarifudin (`K3524019`)
-  - Adelia Rosa Permata (`K3524001`)
+Sistem inspeksi dan evaluasi mobil bekas presisi tinggi dengan pencatatan multi-komponen, kalkulasi skor risiko otomatis (*Risk Index Algorithm*), dan estimasi biaya perbaikan/restorasi secara *real-time*.
 
 ---
 
@@ -21,7 +16,7 @@
 ## 2. Fitur Utama & Pengayaan
 
 ### A. Autentikasi & Manajemen Data (CRUD)
-- **Session Authentication**: Registrasi (`/register`), Login (`/login`), Logout (`/logout`), serta fitur **Login Instan Demo 1-Klik**.
+- **Session Authentication**: Registrasi (`/register`), Login (`/login`), dan Logout (`/logout`) dengan proteksi sesi Laravel standar.
 - **CRUD Data Kendaraan (`/cars`)**: Mengelola profil dan identitas spesifik kendaraan (Merek, Model, Tahun, Nomor Polisi, Transmisi, Odometer, Harga Penawaran Awal, Nomor Rangka/VIN, Nomor Mesin, Warna, BBM, Pajak, dan Foto Kendaraan).
 - **CRUD Sesi Inspeksi (`/inspections`)**: Membuat, membaca, merevisi/mengoreksi, dan menghapus lembar inspeksi kendaraan.
 - **CRUD Item Temuan (`/inspections/{id}/items`)**: Menambah atau menghapus temuan komponen individual beserta unggahan foto bukti kerusakan.
@@ -83,11 +78,11 @@ npm run build
 php artisan serve
 ```
 
-### Akun Demo (Password: `password`)
-- `tedy@carcheck.id` — Tedy Darmawan (Inspektur Independen)
-- `galang@carcheck.id` — Galang Nur Seto (Inspektur Independen)
-- `afifah@carcheck.id` — Afifah Zahrotul Khoir Sarifudin (Calon Pembeli)
-- `adelia@carcheck.id` — Adelia Rosa Permata (Showroom / Dealer)
+### Akun Bawaan (Lihat detail di [PANDUAN_LOGIN.md](file:///c:/xampp/htdocs/CarCheck/PANDUAN_LOGIN.md))
+- `inspector@carcheck.id` — Budi Santoso (Inspektur Independen) | Password: `password`
+- `mechanic@carcheck.id` — Deni Kurniawan (Inspektur Independen) | Password: `password`
+- `buyer@carcheck.id` — Siti Rahmawati (Calon Pembeli) | Password: `password`
+- `showroom@carcheck.id` — Mitra Mobil Showroom (Showroom / Dealer) | Password: `password`
 
 ---
 

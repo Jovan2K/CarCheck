@@ -90,31 +90,6 @@ class AuthController extends Controller
     }
 
     /**
-     * Quick demo login for evaluators/students.
-     */
-    public function demoLogin(Request $request): RedirectResponse
-    {
-        $email = $request->input('email', 'tedy@carcheck.id');
-        $user = User::where('email', $email)->first() ?? User::first();
-
-        if (! $user) {
-            $user = User::create([
-                'name' => 'Tedy Darmawan (K3524037)',
-                'email' => 'tedy@carcheck.id',
-                'phone' => '081234567037',
-                'role' => 'Inspektur Independen',
-                'password' => Hash::make('password'),
-            ]);
-        }
-
-        Auth::login($user);
-        $request->session()->regenerate();
-
-        return redirect()->route('dashboard')
-            ->with('success', 'Login instan berhasil sebagai '.$user->name.' ('.$user->role.').');
-    }
-
-    /**
      * Log the user out of the application.
      */
     public function logout(Request $request): RedirectResponse

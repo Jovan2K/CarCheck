@@ -109,7 +109,7 @@
         </div>
 
         <p class="mt-6 text-[10px] text-slate-500 italic text-center">
-            *Laporan inspeksi ini dihasilkan secara otomatis oleh Sistem CarCheck (Kelompok 1) pada {{ now()->format('d/m/Y H:i') }}.
+            *Laporan inspeksi ini dihasilkan secara otomatis oleh Sistem CarCheck Precision pada {{ now()->format('d/m/Y H:i') }}.
         </p>
     </div>
 </body>

@@ -33,16 +33,10 @@
                 <span class="hidden md:inline text-slate-400">Sistem Inspeksi Multi-Komponen, Kalkulasi Skor Risiko & Estimasi Biaya Restorasi Mobil Bekas</span>
             </div>
             <div class="flex items-center gap-4">
-                <span class="text-slate-400">Kelompok 1 — Laravel Fundamental</span>
                 @auth
-                    <span class="text-emerald-400 font-medium">● Aktif: {{ auth()->user()->name }} ({{ auth()->user()->role ?? 'Inspektur' }})</span>
+                    <span class="text-emerald-400 font-medium">● Sesi Aktif: {{ auth()->user()->name }} ({{ auth()->user()->role ?? 'Pengguna' }})</span>
                 @else
-                    <form action="{{ route('demo.login') }}" method="POST" class="inline">
-                        @csrf
-                        <button type="submit" class="text-amber-400 hover:text-amber-300 font-semibold underline cursor-pointer">
-                            Login Instan Demo (Inspektur)
-                        </button>
-                    </form>
+                    <span class="text-slate-400">Layanan Evaluasi & Inspeksi Kendaraan Independen</span>
                 @endauth
             </div>
         </div>
@@ -193,12 +187,12 @@
                     </ul>
                 </div>
                 <div>
-                    <h4 class="text-xs font-bold uppercase tracking-wider text-white mb-3">Tim Pengembang — Kelompok 1</h4>
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-white mb-3">Standar Inspeksi</h4>
                     <ul class="space-y-1.5 text-xs text-slate-300">
-                        <li class="flex justify-between"><span>Tedy Darmawan (Ketua)</span> <span class="font-mono text-slate-400">K3524037</span></li>
-                        <li class="flex justify-between"><span>Galang Nur Seto</span> <span class="font-mono text-slate-400">K3524053</span></li>
-                        <li class="flex justify-between"><span>Afifah Zahrotul Khoir Sarifudin</span> <span class="font-mono text-slate-400">K3524019</span></li>
-                        <li class="flex justify-between"><span>Adelia Rosa Permata</span> <span class="font-mono text-slate-400">K3524001</span></li>
+                        <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> 6 Area Evaluasi & Struktur Rangka</li>
+                        <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> Sertifikasi Bebas Banjir & Tabrakan</li>
+                        <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> Kalkulasi Skor Risiko Real-Time</li>
+                        <li class="flex items-center gap-2"><span class="text-emerald-400">✓</span> Estimasi Biaya Restorasi & Perbaikan</li>
                     </ul>
                 </div>
             </div>
