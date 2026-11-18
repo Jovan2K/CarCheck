@@ -8,6 +8,11 @@ Dokumen ini memuat daftar akun bawaan sistem CarCheck berdasarkan peran (*role*)
 
 Semua akun menggunakan kata sandi default: **`password`**
 
+> **Aturan Otorisasi & Hak Akses (Role-Based Access Control):**
+> 1. **Khusus Inspektur Independen**: Fitur formulir inspeksi 6 area (`/inspections/create`), pengisian checklist teknis, revisi temuan (`/inspections/{id}/edit`), dan hapus inspeksi hanya dapat diakses oleh akun **Inspektur Independen**.
+> 2. **Pengguna Belum Login (*Guest*)**: Jika mencoba mengakses halaman inspeksi, sistem otomatis mengarahkan ke halaman login dengan notifikasi peringatan.
+> 3. **Calon Pembeli (*End-Buyer*)**: Memiliki akses penuh melihat dashboard, membaca laporan evaluasi detail (A–E), mengunduh/mencetak PDF resmi, dan komparasi mobil, namun tidak memiliki wewenang membuat atau merevisi data inspeksi teknis.
+
 | Peran (*Role*) | Nama Pengguna | Alamat Email | Kata Sandi | Deskripsi & Akses Utama |
 | :--- | :--- | :--- | :--- | :--- |
 | **Inspektur Independen** | Budi Santoso | `inspector@carcheck.id` | `password` | Membuat sesi inspeksi baru, mengisi checklist 32 titik temuan 6 area, input catatan teknis, dan verifikasi kelayakan kendaraan. |

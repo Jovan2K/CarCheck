@@ -25,10 +25,12 @@
                 <span>Cetak / Ekspor PDF Resmi</span>
             </a>
 
-            <a href="{{ route('inspections.edit', $inspection) }}"
-               class="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-white border border-slate-300 hover:bg-slate-50 text-slate-800 text-xs sm:text-sm font-bold transition">
-                <span>Revisi Data Temuan</span>
-            </a>
+            @if (auth()->check() && auth()->user()->role === 'Inspektur Independen')
+                <a href="{{ route('inspections.edit', $inspection) }}"
+                   class="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-white border border-slate-300 hover:bg-slate-50 text-slate-800 text-xs sm:text-sm font-bold transition">
+                    <span>Revisi Data Temuan</span>
+                </a>
+            @endif
 
             <a href="{{ route('compare.index', ['ids' => [$inspection->id]]) }}"
                class="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs sm:text-sm font-bold transition">
@@ -455,11 +457,13 @@
 
                             <div class="px-4 py-2.5 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-xs no-print">
                                 <span class="font-extrabold text-red-600">Biaya: Rp {{ number_format((float) $defect->estimated_cost, 0, ',', '.') }}</span>
-                                <form action="{{ route('inspections.items.destroy', [$inspection, $defect]) }}" method="POST" onsubmit="return confirm('Hapus item temuan ini?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="text-slate-400 hover:text-red-600 font-semibold cursor-pointer">Hapus Temuan</button>
-                                </form>
+                                @if (auth()->check() && auth()->user()->role === 'Inspektur Independen')
+                                    <form action="{{ route('inspections.items.destroy', [$inspection, $defect]) }}" method="POST" onsubmit="return confirm('Hapus item temuan ini?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="text-slate-400 hover:text-red-600 font-semibold cursor-pointer">Hapus Temuan</button>
+                                    </form>
+                                @endif
                             </div>
                         </div>
                     @endforeach
@@ -468,6 +472,7 @@
         </div>
     </div>
 
+    @if (auth()->check() && auth()->user()->role === 'Inspektur Independen')
     <!-- Add Additional Component Finding Form (Granular CRUD InspectionItem + Photo Upload) -->
     <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-2xs no-print">
         <h3 class="text-base font-extrabold text-slate-900 mb-1">Tambah Temuan Komponen / Unggah Bukti Foto Tambahan</h3>
@@ -524,4 +529,5 @@
             </div>
         </form>
     </div>
+    @endif
 </x-layout>

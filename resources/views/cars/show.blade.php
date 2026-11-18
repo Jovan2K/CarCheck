@@ -150,16 +150,20 @@
                             <a href="{{ route('inspections.show', $inspection) }}" class="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-red-600 text-white text-xs font-bold transition">
                                 Buka Laporan
                             </a>
-                            <a href="{{ route('inspections.edit', $inspection) }}" class="px-3 py-2 rounded-xl border border-slate-200 hover:bg-slate-100 text-slate-700 text-xs font-bold transition">
-                                Revisi
-                            </a>
+                            @if (auth()->check() && auth()->user()->role === 'Inspektur Independen')
+                                <a href="{{ route('inspections.edit', $inspection) }}" class="px-3 py-2 rounded-xl border border-slate-200 hover:bg-slate-100 text-slate-700 text-xs font-bold transition">
+                                    Revisi
+                                </a>
+                            @endif
                         </div>
                     </div>
                 </div>
             @empty
                 <div class="p-10 text-center text-slate-500">
                     Belum ada riwayat inspeksi untuk mobil ini.
-                    <a href="{{ route('inspections.create', ['car_id' => $car->id]) }}" class="text-red-600 font-bold underline ml-1">Mulai Inspeksi Pertama</a>
+                    @if (auth()->check() && auth()->user()->role === 'Inspektur Independen')
+                        <a href="{{ route('inspections.create', ['car_id' => $car->id]) }}" class="text-red-600 font-bold underline ml-1">Mulai Inspeksi Pertama</a>
+                    @endif
                 </div>
             @endforelse
         </div>

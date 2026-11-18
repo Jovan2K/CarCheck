@@ -49,4 +49,28 @@ class User extends Authenticatable
     {
         return $this->hasMany(Inspection::class, 'inspector_id');
     }
+
+    /**
+     * Check if user is an Independent Inspector.
+     */
+    public function isInspector(): bool
+    {
+        return $this->role === 'Inspektur Independen';
+    }
+
+    /**
+     * Check if user is an End Buyer.
+     */
+    public function isBuyer(): bool
+    {
+        return $this->role === 'Calon Pembeli';
+    }
+
+    /**
+     * Check if user is a Showroom / Dealer.
+     */
+    public function isDealer(): bool
+    {
+        return $this->role === 'Showroom / Dealer';
+    }
 }

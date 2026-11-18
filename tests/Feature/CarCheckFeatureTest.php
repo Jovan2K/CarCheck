@@ -403,4 +403,70 @@ class CarCheckFeatureTest extends TestCase
             ->assertOk()
             ->assertSee('Laporan Kondisi Kendaraan No. '.$firstInspection->reference_number);
     }
+
+    /**
+     * Skenario 14: Pengguna yang belum login (Guest) ditolak dan diarahkan ke login saat mengakses inspeksi.
+     */
+    public function test_unauthenticated_guest_cannot_access_or_submit_inspection(): void
+    {
+        $car = Car::factory()->create();
+
+        $this->get(route('inspections.create'))
+            ->assertRedirect(route('login'))
+            ->assertSessionHas('error');
+
+        $this->post(route('inspections.store'), [
+            'car_id' => $car->id,
+            'inspection_date' => '2026-11-04',
+            'items' => [],
+        ])->assertRedirect(route('login'))
+            ->assertSessionHas('error');
+    }
+
+    /**
+     * Skenario 15: Pengguna dengan peran Calon Pembeli (End-Buyer) dilarang membuat atau mengedit inspeksi.
+     */
+    public function test_end_buyer_cannot_access_or_submit_inspection(): void
+    {
+        $buyer = User::factory()->buyer()->create();
+        $car = Car::factory()->create();
+        $inspection = Inspection::factory()->create(['car_id' => $car->id]);
+
+        $this->actingAs($buyer)
+            ->get(route('inspections.create'))
+            ->assertRedirect(route('dashboard'))
+            ->assertSessionHas('error');
+
+        $this->actingAs($buyer)
+            ->post(route('inspections.store'), [
+                'car_id' => $car->id,
+                'inspection_date' => '2026-11-04',
+                'items' => [],
+            ])->assertRedirect(route('dashboard'))
+            ->assertSessionHas('error');
+
+        $this->actingAs($buyer)
+            ->get(route('inspections.edit', $inspection))
+            ->assertRedirect(route('dashboard'))
+            ->assertSessionHas('error');
+
+        $this->actingAs($buyer)
+            ->delete(route('inspections.destroy', $inspection))
+            ->assertRedirect(route('dashboard'))
+            ->assertSessionHas('error');
+    }
+
+    /**
+     * Skenario 16: Pengguna dengan peran Inspektur Independen diizinkan mengakses form inspeksi.
+     */
+    public function test_independent_inspector_can_access_inspection_create_form(): void
+    {
+        $inspector = User::factory()->inspector()->create();
+        Car::factory()->create();
+
+        $this->actingAs($inspector)
+            ->get(route('inspections.create'))
+            ->assertOk()
+            ->assertSee('Formulir Checklist 6 Area Komponen');
+    }
 }

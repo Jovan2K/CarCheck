@@ -208,7 +208,10 @@
                     @empty
                         <tr>
                             <td colspan="8" class="py-10 text-center text-slate-500">
-                                Belum ada sesi inspeksi yang sesuai filter. <a href="{{ route('inspections.create') }}" class="text-red-600 font-bold underline">Mulai Inspeksi Baru</a>
+                                Belum ada sesi inspeksi yang sesuai filter.
+                                @if (auth()->check() && auth()->user()->role === 'Inspektur Independen')
+                                    <a href="{{ route('inspections.create') }}" class="text-red-600 font-bold underline ml-1">Mulai Inspeksi Baru</a>
+                                @endif
                             </td>
                         </tr>
                     @endforelse
@@ -284,9 +287,11 @@
                                 Laporan URI Slug
                             </a>
                         @endif
-                        <a href="{{ route('inspections.create', ['car_id' => $car->id]) }}" class="px-3 py-1.5 rounded-lg bg-red-600 hover:bg-red-700 text-white text-xs font-bold transition">
-                            + Inspeksi
-                        </a>
+                        @if (auth()->check() && auth()->user()->role === 'Inspektur Independen')
+                            <a href="{{ route('inspections.create', ['car_id' => $car->id]) }}" class="px-3 py-1.5 rounded-lg bg-red-600 hover:bg-red-700 text-white text-xs font-bold transition">
+                                + Inspeksi
+                            </a>
+                        @endif
                     </div>
                 </div>
             </div>

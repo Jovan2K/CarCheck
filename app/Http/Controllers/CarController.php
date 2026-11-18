@@ -70,7 +70,7 @@ class CarController extends Controller
 
         $car = Car::create($data);
 
-        if ($request->boolean('start_inspection')) {
+        if ($request->boolean('start_inspection') && Auth::check() && Auth::user()->role === 'Inspektur Independen') {
             return redirect()->route('inspections.create', ['car_id' => $car->id])
                 ->with('success', 'Profil kendaraan '.$car->fullName().' berhasil disimpan. Silakan mulai evaluasi 6 area komponen.');
         }

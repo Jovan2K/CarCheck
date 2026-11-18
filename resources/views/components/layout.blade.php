@@ -84,15 +84,30 @@
 
                 <!-- Action CTA & Auth Controls -->
                 <div class="flex items-center gap-2.5">
-                    <a href="{{ route('inspections.create') }}"
-                       class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs sm:text-sm font-bold bg-red-600 text-white hover:bg-red-700 shadow-xs transition">
-                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
-                        </svg>
-                        <span>Mulai Inspeksi</span>
-                    </a>
-
                     @auth
+                        @if (auth()->user()->role === 'Inspektur Independen')
+                            <a href="{{ route('inspections.create') }}"
+                               class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs sm:text-sm font-bold bg-red-600 text-white hover:bg-red-700 shadow-xs transition">
+                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                                </svg>
+                                <span>Mulai Inspeksi</span>
+                            </a>
+                        @elseif (auth()->user()->role === 'Showroom / Dealer')
+                            <a href="{{ route('cars.create') }}"
+                               class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs sm:text-sm font-bold bg-slate-900 text-white hover:bg-slate-800 shadow-xs transition">
+                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                                </svg>
+                                <span>+ Tambah Mobil</span>
+                            </a>
+                        @else
+                            <a href="{{ route('compare.index') }}"
+                               class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 transition">
+                                <span>🔍 Komparasi Mobil</span>
+                            </a>
+                        @endif
+
                         <form action="{{ route('logout') }}" method="POST" class="inline">
                             @csrf
                             <button type="submit" class="px-3 py-2 rounded-lg text-xs sm:text-sm font-semibold text-slate-600 hover:text-red-700 hover:bg-slate-100 border border-slate-200 transition cursor-pointer">
@@ -100,6 +115,15 @@
                             </button>
                         </form>
                     @else
+                        <a href="{{ route('inspections.create') }}"
+                           class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs sm:text-sm font-bold bg-red-600 text-white hover:bg-red-700 shadow-xs transition"
+                           title="Masuk sebagai Inspektur untuk mulai inspeksi">
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                            </svg>
+                            <span>Mulai Inspeksi</span>
+                        </a>
+
                         <a href="{{ route('login') }}" class="px-3 py-2 rounded-lg text-xs sm:text-sm font-semibold text-slate-700 hover:bg-slate-100 border border-slate-200 transition">
                             Masuk
                         </a>
@@ -129,6 +153,17 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                     <span>{{ session('success') }}</span>
+                </div>
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="mb-4 rounded-xl bg-red-50 border border-red-200 p-4 flex items-start justify-between gap-3 text-red-900 shadow-2xs">
+                <div class="flex items-center gap-2.5 text-sm font-medium">
+                    <svg class="w-5 h-5 text-red-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                    <span>{{ session('error') }}</span>
                 </div>
             </div>
         @endif

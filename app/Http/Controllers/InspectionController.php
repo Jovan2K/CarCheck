@@ -7,7 +7,6 @@ use App\Http\Requests\UpdateInspectionRequest;
 use App\Models\Car;
 use App\Models\Inspection;
 use App\Models\InspectionItem;
-use App\Models\User;
 use App\Services\InspectionRiskCalculator;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -77,7 +76,7 @@ class InspectionController extends Controller
     public function store(StoreInspectionRequest $request, InspectionRiskCalculator $calculator): RedirectResponse
     {
         $validated = $request->validated();
-        $inspectorId = Auth::id() ?? User::first()?->id ?? User::factory()->create()->id;
+        $inspectorId = (int) Auth::id();
 
         $inspection = DB::transaction(function () use ($request, $validated, $inspectorId, $calculator): Inspection {
             $inspection = Inspection::create([

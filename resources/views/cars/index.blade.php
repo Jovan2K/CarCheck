@@ -107,10 +107,12 @@
                             Edit
                         </a>
                     </div>
-                    <a href="{{ route('inspections.create', ['car_id' => $car->id]) }}"
-                       class="px-3.5 py-1.5 rounded-lg bg-red-600 hover:bg-red-700 text-white text-xs font-bold transition">
-                        Mulai Inspeksi &rarr;
-                    </a>
+                    @if (auth()->check() && auth()->user()->role === 'Inspektur Independen')
+                        <a href="{{ route('inspections.create', ['car_id' => $car->id]) }}"
+                           class="px-3.5 py-1.5 rounded-lg bg-red-600 hover:bg-red-700 text-white text-xs font-bold transition">
+                            Mulai Inspeksi &rarr;
+                        </a>
+                    @endif
                 </div>
             </div>
         @empty

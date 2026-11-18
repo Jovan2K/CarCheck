@@ -28,11 +28,41 @@ class UserFactory extends Factory
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'phone' => '08'.fake()->numerify('##########'),
-            'role' => fake()->randomElement(['Inspektur Independen', 'Calon Pembeli', 'Showroom / Dealer']),
+            'role' => 'Inspektur Independen',
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
         ];
+    }
+
+    /**
+     * Indicate that the user is an inspector.
+     */
+    public function inspector(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => 'Inspektur Independen',
+        ]);
+    }
+
+    /**
+     * Indicate that the user is an end buyer.
+     */
+    public function buyer(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => 'Calon Pembeli',
+        ]);
+    }
+
+    /**
+     * Indicate that the user is a showroom / dealer.
+     */
+    public function dealer(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => 'Showroom / Dealer',
+        ]);
     }
 
     /**

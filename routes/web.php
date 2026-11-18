@@ -25,13 +25,24 @@ Route::get('/cars/{slug}/report', [CarController::class, 'reportBySlug'])->name(
 Route::resource('cars', CarController::class);
 
 // CRUD Sesi Inspeksi, Dynamic Report URI & Print/Export PDF (PRD Section 2.2.A, 2.2.B, 2.2.E & 2.3)
+Route::get('/inspections', [InspectionController::class, 'index'])->name('inspections.index');
 Route::get('/inspections/{inspection}/print', [InspectionController::class, 'print'])->name('inspections.print');
-Route::resource('inspections', InspectionController::class);
 
-// Granular CRUD for Inspection Items (Checklist Temuan Komponen)
-Route::post('/inspections/{inspection}/items', [InspectionItemController::class, 'store'])->name('inspections.items.store');
-Route::put('/inspections/{inspection}/items/{item}', [InspectionItemController::class, 'update'])->name('inspections.items.update');
-Route::delete('/inspections/{inspection}/items/{item}', [InspectionItemController::class, 'destroy'])->name('inspections.items.destroy');
+// Fitur Khusus Inspektur Independen (Wajib Login & Peran Inspektur)
+Route::middleware('inspector')->group(function (): void {
+    Route::get('/inspections/create', [InspectionController::class, 'create'])->name('inspections.create');
+    Route::post('/inspections', [InspectionController::class, 'store'])->name('inspections.store');
+    Route::get('/inspections/{inspection}/edit', [InspectionController::class, 'edit'])->name('inspections.edit');
+    Route::put('/inspections/{inspection}', [InspectionController::class, 'update'])->name('inspections.update');
+    Route::delete('/inspections/{inspection}', [InspectionController::class, 'destroy'])->name('inspections.destroy');
+
+    // Granular CRUD for Inspection Items (Checklist Temuan Komponen)
+    Route::post('/inspections/{inspection}/items', [InspectionItemController::class, 'store'])->name('inspections.items.store');
+    Route::put('/inspections/{inspection}/items/{item}', [InspectionItemController::class, 'update'])->name('inspections.items.update');
+    Route::delete('/inspections/{inspection}/items/{item}', [InspectionItemController::class, 'destroy'])->name('inspections.items.destroy');
+});
+
+Route::get('/inspections/{inspection}', [InspectionController::class, 'show'])->name('inspections.show');
 
 // Komparator Unit Side-by-Side (PRD Section 2.3)
 Route::get('/compare', [CompareController::class, 'index'])->name('compare.index');

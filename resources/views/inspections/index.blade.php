@@ -8,10 +8,12 @@
             <a href="{{ route('compare.index') }}" class="px-4 py-2.5 rounded-xl bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-bold text-xs sm:text-sm transition">
                 Komparator Unit
             </a>
-            <a href="{{ route('inspections.create') }}"
-               class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs sm:text-sm shadow-xs transition">
-                + Mulai Inspeksi Baru
-            </a>
+            @if (auth()->check() && auth()->user()->role === 'Inspektur Independen')
+                <a href="{{ route('inspections.create') }}"
+                   class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs sm:text-sm shadow-xs transition">
+                    + Mulai Inspeksi Baru
+                </a>
+            @endif
         </div>
     </div>
 
@@ -94,17 +96,19 @@
                                class="px-3 py-2 rounded-xl bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 text-xs font-bold transition">
                                 Cetak PDF
                             </a>
-                            <a href="{{ route('inspections.edit', $inspection) }}"
-                               class="px-3 py-2 rounded-xl border border-slate-200 hover:bg-slate-100 text-slate-700 text-xs font-bold transition">
-                                Revisi
-                            </a>
-                            <form action="{{ route('inspections.destroy', $inspection) }}" method="POST" onsubmit="return confirm('Hapus sesi laporan inspeksi ini?');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="px-3 py-2 rounded-xl border border-slate-200 hover:border-red-300 hover:text-red-600 text-slate-500 text-xs font-bold transition cursor-pointer">
-                                    Hapus
-                                </button>
-                            </form>
+                            @if (auth()->check() && auth()->user()->role === 'Inspektur Independen')
+                                <a href="{{ route('inspections.edit', $inspection) }}"
+                                   class="px-3 py-2 rounded-xl border border-slate-200 hover:bg-slate-100 text-slate-700 text-xs font-bold transition">
+                                    Revisi
+                                </a>
+                                <form action="{{ route('inspections.destroy', $inspection) }}" method="POST" onsubmit="return confirm('Hapus sesi laporan inspeksi ini?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="px-3 py-2 rounded-xl border border-slate-200 hover:border-red-300 hover:text-red-600 text-slate-500 text-xs font-bold transition cursor-pointer">
+                                        Hapus
+                                    </button>
+                                </form>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -112,7 +116,9 @@
         @empty
             <div class="bg-white rounded-2xl border border-slate-200 p-12 text-center text-slate-500">
                 Belum ada laporan inspeksi yang tercatat.
-                <a href="{{ route('inspections.create') }}" class="text-red-600 font-bold underline ml-1">Mulai Sesi Inspeksi Sekarang</a>
+                @if (auth()->check() && auth()->user()->role === 'Inspektur Independen')
+                    <a href="{{ route('inspections.create') }}" class="text-red-600 font-bold underline ml-1">Mulai Sesi Inspeksi Sekarang</a>
+                @endif
             </div>
         @endforelse
     </div>
